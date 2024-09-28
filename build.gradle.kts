@@ -4,6 +4,7 @@ plugins {
 	id("org.springframework.boot") version "3.3.4"
 	id("io.spring.dependency-management") version "1.1.6"
 	kotlin("plugin.jpa") version "1.9.25"
+	id("com.google.cloud.tools.jib") version "3.4.0"
 }
 
 group = "com.example"
@@ -40,4 +41,32 @@ kotlin {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+jib {
+	from {
+		image = "amazoncorretto:17"
+		platforms {
+			platform {
+				architecture = "arm64"
+				os = "linux"
+			}
+		}
+	}
+	to {
+		image = "tmddlf9730/review-pannel"
+		tags = setOf("0.0.1")
+		auth {
+			username = project.findProperty("docker.username")?.toString() ?: System.getenv("DOCKER_USERNAME")
+			password = project.findProperty("docker.password")?.toString() ?: System.getenv("DOCKER_PASSWORD")
+		}
+	}
+	container {
+		creationTime = "USE_CURRENT_TIMESTAMP"
+		jvmFlags = listOf(
+			"-Dspring.profiles.active=local",
+			"-Dfile.encoding=UTF-8",
+		)
+		ports = listOf("8080")
+	}
 }
