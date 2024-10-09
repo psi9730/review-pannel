@@ -1,4 +1,4 @@
-package com.example.review_pannel.dto
+package com.example.review_pannel.game.dto
 
 data class GameSummaryDto (
     val average: Double,

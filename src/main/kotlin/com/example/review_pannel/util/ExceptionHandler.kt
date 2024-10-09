@@ -1,5 +1,7 @@
 package com.example.review_pannel.util
 
+import com.example.review_pannel.user.util.UserAlreadyExistsException
+import com.example.review_pannel.user.util.UserNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
@@ -19,6 +21,16 @@ class GlobalExceptionHandler {
             message = ex.message ?: "Invalid argument provided"
         )
         return ResponseEntity(errorResponse, HttpStatus.BAD_REQUEST)
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException::class)
+    fun handleUserAlreadyExistsException(ex: UserAlreadyExistsException): ResponseEntity<String> {
+        return ResponseEntity(ex.message, HttpStatus.CONFLICT)
+    }
+
+    @ExceptionHandler(UserNotFoundException::class)
+    fun handleUserNotFoundException(ex: UserNotFoundException): ResponseEntity<String> {
+        return ResponseEntity(ex.message, HttpStatus.CONFLICT)
     }
 
     @ExceptionHandler(Exception::class)
