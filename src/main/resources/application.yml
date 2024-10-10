@@ -1,4 +1,32 @@
 spring:
+  profiles:
+    active: local
+
   application:
     name: review-pannel
     ping: Hello from external configuration!
+
+  datasource:
+    url: "jdbc:mysql://localhost:3306/review_pannel?rewriteBatchedStatements=true"
+    username: "root"
+    password: "test1234"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  flyway:
+    enabled: true
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+    hibernate:
+      ddl-auto: validate
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1/
+  error:
+    include-message: always
