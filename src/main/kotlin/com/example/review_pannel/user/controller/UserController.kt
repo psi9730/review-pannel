@@ -11,9 +11,19 @@ class UserController(
     private val userService: UserService
 ) {
 
-    @GetMapping("/{name}")
+    @GetMapping("/legacy/{name}")
     fun getUserByName(@PathVariable("name") name: String): User? {
         return userService.findUserByName(name)
+    }
+
+    @GetMapping("/{name}")
+    fun getUserByNameFetchJoin(@PathVariable("name") name: String): User? {
+        return userService.findUserByNameWithFetchJoin(name)
+    }
+
+    @GetMapping
+    fun getAllUser(): List<User> {
+        return userService.findAllUser()
     }
 
     @PostMapping

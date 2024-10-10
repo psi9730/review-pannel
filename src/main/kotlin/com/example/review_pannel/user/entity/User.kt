@@ -1,5 +1,6 @@
 package com.example.review_pannel.user.entity
 
+import com.example.review_pannel.game.entity.GameScore
 import com.example.review_pannel.user.dto.CreateUserDto
 import jakarta.persistence.*
 
@@ -18,6 +19,9 @@ data class User(
 
     @Column(nullable = false, unique = true)
     val phoneNumber: String,
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    val scores: List<GameScore> = emptyList()
 ) {
     companion object {
         fun fromDto(dto: CreateUserDto): User {

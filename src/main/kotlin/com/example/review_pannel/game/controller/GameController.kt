@@ -17,6 +17,11 @@ class GameController(
         return gameService.getGameSummary()
     }
 
+    @GetMapping("/summary/user")
+    fun getGameSummaryByUserId(@RequestParam userId: Long): GameSummaryDto {
+        return gameService.getUserGameSummary(userId)
+    }
+
     @PostMapping
     fun addGame(@RequestBody gameScore: CreateGameScoreDto): GameScore {
         return gameService.addGame(gameScore)

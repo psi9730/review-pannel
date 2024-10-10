@@ -7,12 +7,13 @@ spring:
     ping: Hello from external configuration!
 
   datasource:
-    url: "jdbc:mysql://localhost:3306/review_pannel"
+    url: "jdbc:mysql://localhost:3306/review_pannel?rewriteBatchedStatements=true"
     username: "root"
     password: "test1234"
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   flyway:
-    enabled: false
+    enabled: true
 
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
@@ -21,12 +22,7 @@ spring:
         show_sql: true
         format_sql: true
     hibernate:
-      ddl-auto: update
-
-logging:
-  level:
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+      ddl-auto: validate
 
 server:
   port: 8080

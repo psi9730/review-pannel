@@ -26,4 +26,12 @@ class UserService(private val userRepository: UserRepository) {
     fun findUserById(id: Long): User? {
         return userRepository.findByIdOrNull(id)
     }
+
+    fun findUserByNameWithFetchJoin(name: String): User? {
+        return userRepository.findUserWithScores(name)
+    }
+
+    fun findAllUser(): List<User> {
+        return userRepository.findAllUser()
+    }
 }

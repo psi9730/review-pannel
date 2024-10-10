@@ -17,17 +17,28 @@ class GameService(
         return gameRepository.findAll()
     }
 
-    fun getGameSummary(): GameSummaryDto {
-        val allGameScores = getAllGames().map{it.score}
+    fun calGameSummary(gameScores: List<GameScore>): GameSummaryDto {
+        val scores = gameScores.map{it.score}
 
-        val average = if (allGameScores.isEmpty()) {
+        val average = if (scores.isEmpty()) {
             0.0
         } else {
-            allGameScores.average()
+            scores.average()
         }
 
-        val highestScore = allGameScores.maxOrNull()
+        val highestScore = scores.maxOrNull()
         return GameSummaryDto(average, highestScore ?: 0)
+    }
+
+    fun getGameSummary(): GameSummaryDto {
+        return calGameSummary(getAllGames())
+    }
+
+    fun getUserGameSummary(userId: Long): GameSummaryDto {
+        val user = userService.findUserById(userId)
+            ?: throw UserNotFoundException("User with ID $userId not found.")
+
+        return calGameSummary(gameRepository.findByUser(user))
     }
 
     fun addGame(dto: CreateGameScoreDto): GameScore {
